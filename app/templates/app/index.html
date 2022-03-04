@@ -1,0 +1,145 @@
+{% extends "app/base.html" %}
+{% block titulo %}NINJA GOLD{% endblock %}
+{% block estilo %}{% endblock  %}
+{% block contenido %}
+<header class="container-fluid bg-primary d-flex justify-content-right">
+    <p class="text-light col-3 mb-0 p-2">
+        Ninja Gold
+    </p>
+    <div class="col-md-4 offset-md-8" >
+        {% if request.session.estado is False %}
+        <a href='/NinjaGold/home' class="btn btn-outline-bg-primary">Get out</a>
+        {%endif%}
+    </div>
+</header>
+<div  class="navbar-light p-3 d-flex">
+    <div class="btn col-md-2 btn-primary" type="button" style="margin-right:10px;" disabled>
+        Tu oro
+    </div>
+        <input class="container-md" type="number" name="gold" placeholder="" value="{{goldstatus}}" style="width:380px; margin-left:25px; text-align:right"  disabled>
+        <input class="container-md" type="text" name="record" placeholder="El record es de 499" style="width:310px; text-align:center" disabled>
+    </div>
+</div>
+{% if request.session.contador < 10 %}
+<div class="container d-flex  gap-2">
+    <div class="col-lg-3 col-md-12 mb-4 mr-2">
+        <div class="card-section border rounded ml-4 mr-4">
+            <div class="card-header card-header-second rounded">
+                <h3 class="card-header-title mb-3 mt-1 text-center">
+                    Granja
+                </h3>
+                <p class="text-center">
+                    (10-20 de oro)
+                </p>
+            </div>
+            <div class="card-body text-center">
+                <div style="height: 220px;">
+                    <h5 class="card-text">
+                        Vende las cosechas, veamos cuanto oro obtienes de tu trabajo
+                    </h5>
+                </div>
+                <br>    
+                <form action='/NinjaGold/procesar' method='post' class=" text-center mb-2 mt-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="granja" />
+                    <input class="btn btn-lg btn-secondary" type="submit" value="Vender">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-12 mb-4">
+        <div class="card-section border rounded ml-4 mr-4">
+            <div class="card-header card-header-second rounded">
+                <h3 class="card-header-title mb-3 mt-1 text-center">
+                    Cueva
+                </h3>
+                <p class="text-center">
+                    (5-10 de oro)
+                </p>
+            </div>
+            <div class="card-body text-center">
+                <div style="height: 220px;">
+                    <h5 class="card-text">
+                        Explora diferentes cuevas, veamos que encuentras.
+                    </h5>
+                </div>
+                <br>
+                <form action='/NinjaGold/procesar' method='post' class=" text-center mb-2 mt-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="cueva" />
+                    <input class="btn btn-lg btn-secondary" type="submit" value="Explorar">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-12 mb-4">
+        <div class="card-section border rounded ml-4 mr-4">
+            <div class="card-header card-header-second rounded">
+                <h3 class="card-header-title mb-3 mt-1 text-center">
+                    Hogar
+                </h3>
+                <p class="text-center">
+                    (2-5 de oro)
+                </p>
+            </div>
+            <div class="card-body text-center">
+                <div style="height: 220px;">
+                    <h5 class="card-text">
+                        Trabaja en tu hogar, siempre hay cosas de las que ocuparse.
+                    </h5>
+                </div>
+                <br>
+                <form action='/NinjaGold/procesar' method='post' class=" text-center mb-2 mt-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="casa" />
+                    <input class="btn btn-secondary mt-2" type="submit" value="Ordenar">
+                </form>
+            </div>
+        </div>
+    </div>    
+    <div class="col-lg-3 col-md-12 mb-4">
+        <div class="card-section border rounded ml-4 mr-4">
+            <div class="card-header card-header-second rounded">
+                <h3 class="card-header-title mb-3 mt-1 text-center">
+                    Casino
+                </h3>
+                <p class="text-center">
+                    (0-50 de oro)
+                </p>
+            </div>
+            <div class="card-body text-center">
+                <div style="height: 220px;">
+                    <h5 class="card-text">
+                        Ten cuidado con apostar, no siempre se gana.
+                    </h5>
+                </div>
+                <br>
+                <form action='/NinjaGold/procesar' method='post' class=" text-center mb-2 mt-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="casino" />
+                    <input class="btn btn-secondary mt-2" type="submit" value="casino">
+                </form>
+            </div>
+        </div>
+    </div>
+   
+</div>
+<div class="justify-content-center align-items-center text-center">
+    <div class="d-inline-flex justify-content-center border border-secondary box overflow-auto w-75">
+        <div>
+            {% if request.session.estado is False and request.session.contador > 0 %} 
+                {%for actividades in request.session.activities %} 
+                    {{actividades | safe}}
+                {% endfor %} 
+            {%endif%}
+        </div> 
+    </div>
+</div>
+{%else%}
+<div class="container-flex align-auto" style="margin-left: 45%; margin-top:40px;">
+    <a class="btn col-3 btn-info justify-content-center" href="/NinjaGold/home">
+        Vuelve a intentarlo
+    </a> 
+</div>
+{%endif%}
+{% endblock  %}
